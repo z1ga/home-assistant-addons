@@ -13,12 +13,6 @@ jobs:
       fail-fast: false
       matrix:
         addon:
-          - avahi-reflector
-          - flicd
-          - keepalived
-          - picamera
-          - tailscale
-          - zabbix-agent
           - zabbix-agent2
         arch:
           - aarch64
@@ -26,14 +20,6 @@ jobs:
           - armhf
           - i386
         exclude:
-          - addon: keepalived
-            arch: i386
-          - addon: keepalived
-            arch: armhf
-          - addon: picamera
-            arch: amd64
-          - addon: picamera
-            arch: i386
           - addon: zabbix-agent2
             arch: i386
           - addon: zabbix-agent2
@@ -45,11 +31,11 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
-      - name: Docker login
-        uses: azure/docker-login@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}          
 
       - name: Build ${{ matrix.addon }} - ${{ matrix.arch }}
         run: |

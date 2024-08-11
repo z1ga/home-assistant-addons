@@ -6,8 +6,6 @@ FROM ${BUILD_BASE_IMAGE} as builder
 
 FROM alpine
 
-LABEL maintainer "Philipp Schmitt <philipp@schmitt.co>"
-
 ENV LANG C.UTF-8
 
 # Install requirements for add-on
@@ -17,8 +15,8 @@ RUN apk add --no-cache jq zabbix-agent2 && \
     mkdir -p /etc/zabbix/zabbix_agent2.d/plugins.d
 
 # Copy zabbix-agent2 plugins
-COPY --from=builder ["/usr/sbin/zabbix-agent2-plugin", "/usr/sbin/zabbix-agent2-plugin"]
-RUN echo -e "\nPlugins.PostgreSQL.System.Path=/usr/sbin/zabbix-agent2-plugin/zabbix-agent2-plugin-mongodb\nPlugins.PostgreSQL.System.Path=/usr/sbin/zabbix-agent2-plugin/zabbix-agent2-plugin-postgresql\n" >> /etc/zabbix/zabbix_agent2.conf
+# COPY --from=builder ["/usr/sbin/zabbix-agent2-plugin", "/usr/sbin/zabbix-agent2-plugin"]
+# RUN echo -e "\nPlugins.PostgreSQL.System.Path=/usr/sbin/zabbix-agent2-plugin/zabbix-agent2-plugin-mongodb\nPlugins.PostgreSQL.System.Path=/usr/sbin/zabbix-agent2-plugin/zabbix-agent2-plugin-postgresql\n" >> /etc/zabbix/zabbix_agent2.conf
 
 # Copy data for add-on
 COPY run.sh /
